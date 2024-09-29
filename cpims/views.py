@@ -14,7 +14,121 @@ from cpovc_main.functions import get_dict
 from cpovc_access.functions import access_request
 from django.contrib.auth.decorators import login_required
 
+########################################
+import requests
+from zeep import Client, Transport
+from zeep.exceptions import Fault
+from django.http import HttpResponse
+from django.shortcuts import render
+from requests import Session
+
+# Example WSDL URL
+wsdl_url = "https://dev.cpims.net/IPRSServerwcf?wsdl"
+
+def test_home(request):
+    return render(request, 'cpims/home.html')
+
+def test_login(username='test', password='pass'):
+    # Create a SOAP client
+    session = Session()
+    client = Client(wsdl_url, transport=Transport(session=session))
+
+    # Prepare parameters for the SOAP call
+    params = {
+        'log': username,
+        'pass': password
+    }
+
+    try:
+        # Call the SOAP method
+        response = client.service.Login(**params)
+        return response  # Return the actual response
+
+    except Fault as fault:
+        return HttpResponse(f"SOAP Fault: {fault.message}")
+
+    except requests.exceptions.RequestException as req_err:
+        return HttpResponse(f"Request failed: {req_err}")
+
+    except Exception as e:
+        return HttpResponse(f"An unexpected error occurred: {str(e)}")
+
+def get_data_by_alien_card(request):
+    if request.method == 'POST':
+        id_number = request.POST.get('id_number')
+        serial_number = request.POST.get('serial_number')
+
+        # Call the login function and handle its response
+        login_response = test_login()
+
+        if isinstance(login_response, HttpResponse):
+            return login_response  # If the login response is an error, return it
+
+        # Prepare parameters for the SOAP call
+        params = {
+            'id_number': id_number,
+            'serial_number': serial_number
+        }
+
+        try:
+            session = Session()
+            client = Client(wsdl_url, transport=Transport(session=session))
+            response = client.service.GetDataByAlienCard(**params)
+
+            return render(request, 'cpims/results.html', {'response': response})
+
+        except Fault as fault:
+            return HttpResponse(f"SOAP Fault: {fault.message}")
+
+        except requests.exceptions.RequestException as req_err:
+            return HttpResponse(f"Request failed: {req_err}")
+
+        except Exception as e:
+            return HttpResponse(f"An unexpected error occurred: {str(e)}")
+
+    return render(request, 'cpims/alien.html')
+
+def get_verified_by_passport(request):
+    if request.method == 'POST':
+        id_number = request.POST.get('id_number')
+        passport_number = request.POST.get('passport_number')
+
+        # Call the login function and handle its response
+        login_response = test_login()
+
+        if isinstance(login_response, HttpResponse):
+            return login_response  # If the login response is an error, return it
+
+        # Prepare parameters for the SOAP call
+        params = {
+            'id_number': id_number,
+            'passport_number': passport_number
+        }
+
+        try:
+            session = Session()
+            client = Client(wsdl_url, transport=Transport(session=session))
+            response = client.service.VerificationByPassport(**params)
+
+            return render(request, 'cpims/verify-success.html', {'response': response})
+
+        except Fault as fault:
+            return HttpResponse(f"SOAP Fault: {fault.message}")
+
+        except requests.exceptions.RequestException as req_err:
+            return HttpResponse(f"Request failed: {req_err}")
+
+        except Exception as e:
+            return HttpResponse(f"An unexpected error occurred: {str(e)}")
+
+    return render(request, 'cpims/verify.html')
+###########################################
+
+
+
 mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+
+
 
 
 def public_dash(request):

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block page_title %} DREAMS {% endblock %}
+
+{% load app_filters %}
+{% load crispy_forms_tags %}
+
+{% block style_code %}
+<link href="{% static 'plugins/datatables/css/data-table.css' %}" rel="stylesheet" />
+<style>
+    /* Custom styles for specific IDs */
+    #welcome-heading {
+        font-size: 2.5rem; /* Adjust heading size */
+        color: #2d3748; /* Dark gray color */
+    }
+    #options-list {
+        list-style-type: none; /* Remove default list styling */
+        padding: 0; /* Remove padding */
+    }
+    #options-list a {
+        display: block; /* Make links block elements */
+        padding: 10px 0; /* Add padding for spacing */
+        transition: color 0.3s; /* Smooth color transition */
+        font-size: 2rem; /* Font size for links */
+        color: #0056b3; /* Default link color */
+        text-decoration: none; /* Remove underline */
+    }
+    #options-list a:hover {
+        color: #003d80; /* Darker blue on hover */
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+{% endblock %}
+
+{% block primary %}
+<div class="container mt-5 bg-white p-5 rounded shadow">
+    <h1 id="welcome-heading">Welcome!</h1>
+    <p class="lead" id="status-message">You are logged in.</p>
+
+    <h2 class="mt-4" id="options-heading">Choose an option:</h2>
+    <ul id="options-list">
+        <li>
+            <a href="{% url 'alien' %}" id="alien-link">Get Data by Alien Card</a>
+        </li>
+        <li>
+            <a href="{% url 'verify' %}" id="verify-link">Verification by Passport</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block page_title %} DREAMS {% endblock %}
+
+{% load app_filters %}
+{% load crispy_forms_tags %}
+
+{% block style_code %}
+<style>
+    #bg-white {
+        max-width: 100px;
+    }
+     #passport-verification-form {
+        max-width: 400px; /* Custom width */
+        margin: auto; /* Center the form */
+        padding: 20px; /* Add padding for better spacing */
+    }
+</style>
+{% endblock %}
+
+{% block primary %}
+
+<div class="bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-bold mb-4 text-center text-success">Verify</h1>
+
+    <form id="passport-verification-form" method="POST" action="{% url 'verify' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_number" class="form-label">ID Number:</label>
+            <input type="text" id="id_number" name="id_number" value="{{ id_number }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="passport_number" class="form-label">Passport Number:</label>
+            <input type="text" id="passport_number" name="passport_number" value="{{ passport_number }}" class="form-control">
+        </div>
+
+        <div class="mt-4 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{% url 'test-home' %}" class="btn btn-secondary">Go to Home</a>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block page_title %} DREAMS {% endblock %}
+
+{% load app_filters %}
+{% load crispy_forms_tags %}
+
+{% block style_code %}
+<style>
+    #alien-details-form {
+        max-width: 400px; /* Custom width */
+        margin: auto; /* Center the form */
+        padding: 20px; /* Add padding for better spacing */
+    }
+    #form-title {
+        color: #333; /* Custom title color */
+    }
+    #id-label, #serial-label {
+        font-size: 1rem;
+        margin-bottom: 0.25rem; /* Reduced margin below labels */
+    }
+    .form-control {
+        margin-top: 0;
+        border: 1px solid #ced4da; /* Custom border color */
+        border-radius: 0.25rem; /* Rounded corners */
+        transition: border-color 0.2s, box-shadow 0.2s; /* Smooth transition */
+        padding: 0.375rem 0.75rem; /* Adjusted padding for inputs */
+    }
+    .form-control:focus {
+        border-color: #80bdff; /* Focus border color */
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus shadow */
+    }
+    #submit-button {
+        background-color: #007bff; /* Custom button color */
+        border: none; /* Remove border */
+        margin-top: 20px;
+    }
+    #submit-button:hover {
+        background-color: #0056b3; /* Custom hover color */
+    }
+</style>
+{% endblock %}
+
+{% block primary %}
+<div id="alien-details-form" class="bg-white shadow-lg rounded-lg">
+    <h1 id="form-title" class="text-2xl font-bold mb-1 text-center">Enter Alien Details</h1>
+    <form method="POST" action="{% url 'alien' %}">
+        {% csrf_token %}
+        <div>
+            <label for="id_number" id="id-label" class="form-label">ID Number:</label>
+            <input type="text" id="id_number" name="id_number" class="form-control">
+        </div>
+        <div>
+            <label for="serial_number" id="serial-label" class="form-label">Serial Number:</label>
+            <input type="text" id="serial_number" name="serial_number" class="form-control">
+        </div>
+        <button type="submit" id="submit-button" class="btn btn-primary w-100">Submit</button>
+        <a href="{% url 'test-home' %}" class="btn btn-secondary">Go to Home</a>
+
+    </form>
+</div>
+{% endblock %}

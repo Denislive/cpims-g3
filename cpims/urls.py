@@ -36,6 +36,8 @@ from cpovc_mobile import urls as mobile_urls
 from cpovc_hes import urls as hes_urls
 from cpovc_dreams import urls as dreams_urls
 
+
+
 from drf_spectacular.views import (
     SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView)
 
@@ -128,6 +130,11 @@ urlpatterns = [
     path('api/docs/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+
+    path('test-wsdl/', views.get_data_by_alien_card, name="alien"),
+    path('test-verify/', views.get_verified_by_passport, name="verify"),
+    path('test-home/', views.test_home, name="test-home"),
 ]
 
 handler400 = 'cpims.views.handler_400'

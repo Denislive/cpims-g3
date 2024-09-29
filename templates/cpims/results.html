@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block page_title %} DREAMS {% endblock %}
+
+{% load app_filters %}
+{% load crispy_forms_tags %}
+
+{% block style_code %}
+
+{% endblock %}
+
+{% block primary %}
+
+<div class="bg-white shadow-lg rounded-lg p-4">
+    <h1 class="text-2xl font-bold mb-4 text-center text-success">Data Found!</h1>
+    
+    <div class="mb-3">
+        <p class="font-weight-bold">ID Number:</p>
+        <p class="text-secondary">{{ id_number }}</p>
+    </div>
+
+    <div class="mb-3">
+        <p class="font-weight-bold">Serial Number:</p>
+        <p class="text-secondary">{{ serial_number }}</p>
+    </div>
+
+    <hr class="my-4">
+
+    <h3 class="text-lg font-weight-semibold mb-2">Response</h3>
+    <p class="text-secondary">{{ response }}</p>
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'test-home' %}" class="btn btn-primary">Go to Home</a>
+    </div>
+</div>
+
+
+{% endblock %}

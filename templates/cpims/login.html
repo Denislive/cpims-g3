@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block page_title %} DREAMS {% endblock %}
+
+{% load app_filters %}
+{% load crispy_forms_tags %}
+
+{% block style_code %}
+<link href="{% static 'plugins/datatables/css/data-table.css' %}" rel="stylesheet" />
+<style>
+    /* Custom styles for specific IDs */
+    #welcome-heading {
+        font-size: 2.5rem; /* Adjust heading size */
+        color: #2d3748; /* Dark gray color */
+    }
+    #options-list {
+        list-style-type: none; /* Remove default list styling */
+        padding: 0; /* Remove padding */
+    }
+    #options-list a {
+        display: block; /* Make links block elements */
+        padding: 10px 0; /* Add padding for spacing */
+        transition: color 0.3s; /* Smooth color transition */
+        font-size: 2rem; /* Font size for links */
+        color: #0056b3; /* Default link color */
+        text-decoration: none; /* Remove underline */
+    }
+    #options-list a:hover {
+        color: #003d80; /* Darker blue on hover */
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+{% endblock %}
+
+{% block primary %}
+<div id="login-card" class="bg-white shadow-md rounded-lg p-4">
+    <h1 class="text-2xl font-bold mb-4 text-center">Login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group mb-4">
+            <label for="username" class="font-weight-semibold">Username:</label>
+            <input type="text" id="username" name="username" required class="form-control">
+        </div>
+        <div class="form-group mb-4">
+            <label for="password" class="font-weight-semibold">Password:</label>
+            <input type="password" id="password" name="password" required class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    {% if error_message %}
+        <div id="error-message" class="text-danger mt-3 text-center">{{ error_message }}</div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-8 w-96">
+        <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="username" class="block text-sm font-semibold mb-1">Username:</label>
+                <input type="text" id="username" name="username" required class="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-sm font-semibold mb-1">Password:</label>
+                <input type="password" id="password" name="password" required class="border border-gray-300 rounded w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white font-semibold py-2 rounded w-full hover:bg-blue-600">Login</button>
+        </form>
+        {% if error_message %}
+            <div class="text-red-500 text-sm mt-4 text-center">{{ error_message }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
