@@ -66,8 +66,6 @@ def get_data_by_alien_card(request):
         # Call the login function and handle its response
         login_response = test_login()
         print(login_response)
-
-
         # Prepare parameters for the SOAP call
         params = {
             'id_number': id_number,
@@ -94,7 +92,6 @@ def get_data_by_alien_card(request):
         else:
             return HttpResponse(f"Error logging in!")
                 
-
     return render(request, 'cpims/alien.html')
 
 def get_verified_by_passport(request):
