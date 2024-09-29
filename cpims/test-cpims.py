@@ -17,7 +17,7 @@ else:
    print(f'Response: {response.text}')
 
 
-def get_data_by_id_card(url, info):
+def get_data_by_id_card(url, id):
     """Make a GET request to the specified URL with Bearer token authentication."""
     headers = {
         'Authorization': f'Bearer {token}',
@@ -25,7 +25,7 @@ def get_data_by_id_card(url, info):
     }
     
     try:
-        response = requests.get(url, params=info, headers=headers)
+        response = requests.get(url, headers=headers, json=id)
         response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
 
         # Print the response data
@@ -59,12 +59,12 @@ def get_data_by_id_card(url, info):
 
 if __name__ == "__main__":
 
-    info = {
+    id = {
         "id_number": "39922822",
     }
     # Example URL for GET request
     get_url = "https://ovc.childprotection.uonbi.ac.ke/api/iprs/2/"  # Replace with your API endpoint
-    get_data_by_id_card(get_url, info=info)
+    get_data_by_id_card(get_url, id)
 
     # # Example URL for POST request
     # post_url = "https://ovc.childprotection.uonbi.ac.ke/api/iprs/4/"  # Replace with your API endpoint
