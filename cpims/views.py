@@ -42,6 +42,11 @@ def test_login(username='test', password='pass'):
     try:
         # Call the SOAP method
         response = client.service.Login(**params)
+        
+        if response:
+            print("Login successful!")
+        else:
+            print("Login failed!")
         return response  # Return the actual response
 
     except Fault as fault:
@@ -60,9 +65,8 @@ def get_data_by_alien_card(request):
 
         # Call the login function and handle its response
         login_response = test_login()
+        print(login_response)
 
-        if isinstance(login_response, HttpResponse):
-            return login_response  # If the login response is an error, return it
 
         # Prepare parameters for the SOAP call
         params = {
@@ -70,21 +74,26 @@ def get_data_by_alien_card(request):
             'serial_number': serial_number
         }
 
-        try:
-            session = Session()
-            client = Client(wsdl_url, transport=Transport(session=session))
-            response = client.service.GetDataByAlienCard(**params)
+        if login_response:
 
-            return render(request, 'cpims/results.html', {'response': response})
+            try:
+                session = Session()
+                client = Client(wsdl_url, transport=Transport(session=session))
+                response = client.service.GetDataByAlienCard(**params)
+                
+                return render(request, 'cpims/results.html', {'response': login_response})
 
-        except Fault as fault:
-            return HttpResponse(f"SOAP Fault: {fault.message}")
+            except Fault as fault:
+                return HttpResponse(f"SOAP Fault: {fault.message}")
 
-        except requests.exceptions.RequestException as req_err:
-            return HttpResponse(f"Request failed: {req_err}")
+            except requests.exceptions.RequestException as req_err:
+                return HttpResponse(f"Request failed: {req_err}")
 
-        except Exception as e:
-            return HttpResponse(f"An unexpected error occurred: {str(e)}")
+            except Exception as e:
+                return HttpResponse(f"An unexpected error occurred: {str(e)}")
+        else:
+            return HttpResponse(f"Error logging in!")
+                
 
     return render(request, 'cpims/alien.html')
 
@@ -96,30 +105,32 @@ def get_verified_by_passport(request):
         # Call the login function and handle its response
         login_response = test_login()
 
-        if isinstance(login_response, HttpResponse):
-            return login_response  # If the login response is an error, return it
-
+        
         # Prepare parameters for the SOAP call
         params = {
             'id_number': id_number,
             'passport_number': passport_number
         }
 
-        try:
-            session = Session()
-            client = Client(wsdl_url, transport=Transport(session=session))
-            response = client.service.VerificationByPassport(**params)
+        if login_response:
 
-            return render(request, 'cpims/verify-success.html', {'response': response})
+            try:
+                session = Session()
+                client = Client(wsdl_url, transport=Transport(session=session))
+                response = client.service.VerificationByPassport(**params)
 
-        except Fault as fault:
-            return HttpResponse(f"SOAP Fault: {fault.message}")
+                return render(request, 'cpims/verify-success.html', {'response': response})
 
-        except requests.exceptions.RequestException as req_err:
-            return HttpResponse(f"Request failed: {req_err}")
+            except Fault as fault:
+                return HttpResponse(f"SOAP Fault: {fault.message}")
 
-        except Exception as e:
-            return HttpResponse(f"An unexpected error occurred: {str(e)}")
+            except requests.exceptions.RequestException as req_err:
+                return HttpResponse(f"Request failed: {req_err}")
+
+            except Exception as e:
+                return HttpResponse(f"An unexpected error occurred: {str(e)}")
+
+        return HttpResponse(f"Error logging in!")
 
     return render(request, 'cpims/verify.html')
 ###########################################
