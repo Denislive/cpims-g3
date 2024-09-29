@@ -2,4 +2,4 @@ __pycache__
 *.pyc
 migrations
 cpims/settings.py
-*.env
+.env
